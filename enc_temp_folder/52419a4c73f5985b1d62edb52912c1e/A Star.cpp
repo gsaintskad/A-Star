@@ -20,7 +20,8 @@ int main() {
 	cout << "Enter start point x,y :\t";
 	cin >> start.x;
 	cin >> start.y;
-	
+	/*start.x = 1;
+	start.y = 1;*/
 	start.isVisited = true;
 	map[start.y][start.x] = start;
 
@@ -28,7 +29,8 @@ int main() {
 	node end;
 	end.entity = 'X';
 	cout << "Enter end point x,y :\t";
-	
+	/*end.x = 7;
+	end.y = 1;*/
 	cin >> end.x;
 	cin >> end.y;
 	map[end.y][end.x] = end;
