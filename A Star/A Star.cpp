@@ -63,6 +63,7 @@ void neighbourcheck(vector<vector<node>>* m, vector<node>* q, node* n, node* e, 
 	if (!endcheck(n, e)) {
 		n->isVisited = true;
 		n->isChecked = true;
+		//checking the neighbour cells in radius of 1 cell
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				node* N = &(*(&((*m)[n->y + i])))[n->x + j];
@@ -127,12 +128,21 @@ vector<node> A_star(vector<vector<node>>* map,node* start,node* end){
 	//Queue defining 
 	vector<node>Q;
 	Q.push_back(*start);
+
+
+	//Output defining
 	vector<node> output;
 
 	while (Q.size()) {
 		neighbourcheck(map, &Q, &Q[0], end, &output, start);
 	}
 
+	for (int i = output.size() - 2; i > 0; i--) {
+		(*map)[output[i].y][output[i].x].entity = '*';
+	}
+	return output;
+}
+void print_output(vector<node>& output, node* end, vector<vector<node>>* map) {
 	cout << endl << endl << "\t\t PATH , YOU NEED TO WALK TO GET THE TARGET : " << "\n\n\n" << "START : ";
 	for (int i = output.size() - 1; i > -1; i--) {
 
@@ -144,12 +154,21 @@ vector<node> A_star(vector<vector<node>>* map,node* start,node* end){
 	*end = output[0];
 
 	cout << "\t \n TOTAL DISTANCE :" << end->dwalked << endl;
-	for (int i = output.size() - 2; i > 0; i--) {
-		(* map)[output[i].y][output[i].x].entity = '*';
-	}
-	return output;
+	
 }
-int main() {
+node start_init(vector<vector<node>>&map) {
+	//start defining
+	node start;
+	start.entity = '@';
+
+	cout << "Enter point coordinates x,y :\t";
+	cin >> start.x;
+	cin >> start.y;
+	start.isVisited = true;
+	map[start.y][start.x] = start;
+	return start;
+}
+vector<vector<node>>map_init() {
 	//MAP GENERATING
 	vector<vector<node>>map = { {},{},{},{},{},{},{},{},{} };
 
@@ -193,6 +212,23 @@ int main() {
 		map[sz][i] = wall;;
 		map[i][sz] = wall;
 	}
+	return map;
+}
+int main() {
+	//MAP GENERATING
+	vector<vector<node>>map=map_init();
+	print(map);
+
+	//start defining
+	node start;
+	start.entity = '@';
+
+	cout << "Enter start point x,y :\t";
+	cin >> start.x;
+	cin >> start.y;
+	start.isVisited = true;
+	map[start.y][start.x] = start;
+
 	//end defining
 	node end;
 	end.entity = 'X';
@@ -200,25 +236,8 @@ int main() {
 	end.y = 4;
 	map[end.y][end.x] = end;
 
-
-	print(map);
-
-	//start defining
-	node start;
-	start.entity = '@';
-	start.x = 1;
-	start.y = 6;
-	start.isVisited = true;
-	map[start.y][start.x] = start;
-
-	//Queue defining 
-	vector<node>Q;
-
-
-
-		
-	A_star(&map, &start, &end);
-	
+	vector<node> output= A_star(&map, &start, &end);
+	print_output(output, &end, &map);
 	print(map);
 
 	return 0;
