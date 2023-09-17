@@ -168,6 +168,7 @@ node start_init(vector<vector<node>>&map) {
 	map[start.y][start.x] = start;
 	return start;
 }
+
 vector<vector<node>>map_init() {
 	//MAP GENERATING
 	vector<vector<node>>map = { {},{},{},{},{},{},{},{},{} };
@@ -232,8 +233,9 @@ int main() {
 	//end defining
 	node end;
 	end.entity = 'X';
-	end.x = 6;
-	end.y = 4;
+	cout << "Enter end point x,y :\t";
+	cin >> end.x;
+	cin >> end.y;
 	map[end.y][end.x] = end;
 
 	vector<node> output= A_star(&map, &start, &end);
