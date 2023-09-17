@@ -103,7 +103,7 @@ void neighbourcheck(vector<vector<node>>* m, vector<node>* q, node* n, node* e, 
 		q->clear();
 	}
 }
-void print(vector<vector<node>>m) {
+void print(vector<vector<node>>m){
 	cout << "    X   ";
 	for (int i = 1; i < m.size() - 1; i++) {
 		cout << i << "   ";
@@ -122,6 +122,32 @@ void print(vector<vector<node>>m) {
 		}
 		cout << endl << endl;
 	}
+}
+vector<node> A_star(vector<vector<node>>* map,node* start,node* end){
+	//Queue defining 
+	vector<node>Q;
+	Q.push_back(*start);
+	vector<node> output;
+
+	while (Q.size()) {
+		neighbourcheck(map, &Q, &Q[0], end, &output, start);
+	}
+
+	cout << endl << endl << "\t\t PATH , YOU NEED TO WALK TO GET THE TARGET : " << "\n\n\n" << "START : ";
+	for (int i = output.size() - 1; i > -1; i--) {
+
+		cout << "[" << output[i].y << " , " << output[i].x << "] ";
+		if (i != 0)
+			cout << " -> ";
+	}
+	cout << " FINISH !!!" << endl;
+	*end = output[0];
+
+	cout << "\t \n TOTAL DISTANCE :" << end->dwalked << endl;
+	for (int i = output.size() - 2; i > 0; i--) {
+		(* map)[output[i].y][output[i].x].entity = '*';
+	}
+	return output;
 }
 int main() {
 	//MAP GENERATING
@@ -190,30 +216,9 @@ int main() {
 
 
 
-
-
-
-	Q.push_back(start);
-	vector<node> output;
-
-	while (Q.size()) {
-		neighbourcheck(&map, &Q, &Q[0], &end, &output, &start);
-	}
-
-	cout << endl << endl << "\t\t PATH , YOU NEED TO WALK TO GET THE TARGET : " << "\n\n\n" << "START : ";
-	for (int i = output.size() - 1; i > -1; i--) {
-
-		cout << "[" << output[i].y << " , " << output[i].x << "] ";
-		if (i != 0)
-			cout << " -> ";
-	}
-	cout << " FINISH !!!" << endl;
-	end = output[0];
-
-	cout << "\t \n TOTAL DISTANCE :" << end.dwalked << endl;
-	for (int i = output.size() - 2; i > 0; i--) {
-		map[output[i].y][output[i].x].entity = '*';
-	}
+		
+	A_star(&map, &start, &end);
+	
 	print(map);
 
 	return 0;
