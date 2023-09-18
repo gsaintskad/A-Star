@@ -4,6 +4,7 @@
 #include"node.h"
 
 using namespace std;
+
 	double dset(node a, node b);
 	double eset(node a, node b);
 	void sortv(vector<node>* q);
